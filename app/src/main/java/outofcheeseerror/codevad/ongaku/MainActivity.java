@@ -62,19 +62,15 @@ public class MainActivity extends Activity {
     private int mMaintain;
     private boolean mIsMetric;
     private float mMaintainInc;
-    private boolean mQuitting = false; // Set when user selected Quit from menu, can be used by onPause, onStop, onDestroy
+    private boolean mQuitting = false;
     SeekBar seekbar;
     MediaPlayer audioPlayer;
     PlaybackParams params;
     Button play;
     private int count=0;
 
-    /**
-     * True, when service is running.
-     */
+
     private boolean mIsRunning;
-    
-    /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         outofcheeseerror.codevad.ongaku.FontsOverride.setDefaultFont(this, "DEFAULT", "r.ttf");
@@ -84,7 +80,7 @@ public class MainActivity extends Activity {
         mPaceValue = 0;
 
         setContentView(R.layout.activity_main);
-        seekbar=(SeekBar)findViewById(R.id.seekbar);
+        //seekbar=(SeekBar)findViewById(R.id.seekbar);
         play=(Button)findViewById(R.id.play);
 
         File f = new File(getCacheDir()+"/animals.mp3");
@@ -106,7 +102,7 @@ public class MainActivity extends Activity {
         params = new PlaybackParams();
 
         audioPlayer.setPlaybackParams(params);
-        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+      /*  seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                params.setSpeed(0.8f+(progress*1f)*(0.004f));
@@ -124,7 +120,7 @@ public class MainActivity extends Activity {
             }
         });
 
-
+*/
         if(IsKitKatWithStepCounter(this.getPackageManager()))
         {
 
@@ -150,11 +146,9 @@ public class MainActivity extends Activity {
         mPedometerSettings = new PedometerSettings(mSettings);
         
         mUtils.setSpeak(mSettings.getBoolean("speak", false));
-        
-        // Read from preferences if the service was running on the last onPause
+
         mIsRunning = mPedometerSettings.isServiceRunning();
-        
-        // Start the service if this is considered to be an application start (last onPause was long ago)
+
         if (!mIsRunning && mPedometerSettings.isNewStart()) {
             startStepService();
             bindStepService();
@@ -173,23 +167,11 @@ public class MainActivity extends Activity {
         mDesiredPaceView   = (TextView) findViewById(R.id.desired_pace_value);
 
         mIsMetric = mPedometerSettings.isMetric();
-        ((TextView) findViewById(R.id.distance_units)).setText(getString(
-                mIsMetric
-                ? R.string.kilometers
-                : R.string.miles
-        ));
-        ((TextView) findViewById(R.id.speed_units)).setText(getString(
-                mIsMetric
-                ? R.string.kilometers_per_hour
-                : R.string.miles_per_hour
-        ));
+
+
         
         mMaintain = mPedometerSettings.getMaintainOption();
-        ((LinearLayout) this.findViewById(R.id.desired_pace_control)).setVisibility(
-                mMaintain != PedometerSettings.M_NONE
-                ? View.VISIBLE
-                : View.GONE
-            );
+
         if (mMaintain == PedometerSettings.M_PACE) {
             mMaintainInc = 5f;
             mDesiredPaceOrSpeed = (float)mPedometerSettings.getDesiredPace();
@@ -249,7 +231,6 @@ public class MainActivity extends Activity {
     
     @Override
     protected void onPause() {
-        Log.i(TAG, "[ACTIVITY] onPause");
         if (mIsRunning) {
             unbindStepService();
         }
@@ -264,21 +245,7 @@ public class MainActivity extends Activity {
         savePaceSetting();
     }
 
-    @Override
-    protected void onStop() {
-        Log.i(TAG, "[ACTIVITY] onStop");
-        super.onStop();
-    }
 
-    protected void onDestroy() {
-        Log.i(TAG, "[ACTIVITY] onDestroy");
-        super.onDestroy();
-    }
-    
-    protected void onRestart() {
-        Log.i(TAG, "[ACTIVITY] onRestart");
-        super.onRestart();
-    }
 
     private void setDesiredPaceOrSpeed(float desiredPaceOrSpeed) {
         if (mService != null) {
@@ -315,7 +282,6 @@ public class MainActivity extends Activity {
 
     private void startStepService() {
         if (! mIsRunning) {
-            Log.i(TAG, "[SERVICE] Start");
             mIsRunning = true;
             startService(new Intent(MainActivity.this,
                     StepService.class));
@@ -323,20 +289,16 @@ public class MainActivity extends Activity {
     }
     
     private void bindStepService() {
-        Log.i(TAG, "[SERVICE] Bind");
         bindService(new Intent(MainActivity.this,
                 StepService.class), mConnection, Context.BIND_AUTO_CREATE + Context.BIND_DEBUG_UNBIND);
     }
 
     private void unbindStepService() {
-        Log.i(TAG, "[SERVICE] Unbind");
         unbindService(mConnection);
     }
     
     private void stopStepService() {
-        Log.i(TAG, "[SERVICE] Stop");
         if (mService != null) {
-            Log.i(TAG, "[SERVICE] stopService");
             stopService(new Intent(MainActivity.this,
                   StepService.class));
         }
@@ -533,8 +495,8 @@ public class MainActivity extends Activity {
 
         // Require at least Android KitKat
         int currentApiVersion = (int) Build.VERSION.SDK_INT;
-        // Check that the device supports the step counter and detector sensors
-        return currentApiVersion>=19 && pm.hasSystemFeature (PackageManager.FEATURE_SENSOR_GYROSCOPE)
+        // Checks that the device supports the step counter and detector sensors
+        return currentApiVersion>=19 && pm.hasSystemFeature (PackageManager.FEATURE_SENSOR_STEP_COUNTER)
                && pm.hasSystemFeature (PackageManager.FEATURE_SENSOR_STEP_DETECTOR);
 
 
@@ -543,27 +505,5 @@ public class MainActivity extends Activity {
             Executors.newSingleThreadScheduledExecutor();
 
 
-    public final class FontsOverride {
 
-        public  void setDefaultFont(Context context,
-                                          String staticTypefaceFieldName, String fontAssetName) {
-            final Typeface regular = Typeface.createFromAsset(context.getAssets(),
-                    fontAssetName);
-            replaceFont(staticTypefaceFieldName, regular);
-        }
-
-        protected  void replaceFont(String staticTypefaceFieldName,
-                                          final Typeface newTypeface) {
-            try {
-                final Field staticField = Typeface.class
-                        .getDeclaredField(staticTypefaceFieldName);
-                staticField.setAccessible(true);
-                staticField.set(null, newTypeface);
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }
