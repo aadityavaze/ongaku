@@ -3,8 +3,15 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="@dimen/margin" 
+
     android:background="@color/screen_background">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/imgbg1">
+
+
+    </LinearLayout>
     
     <LinearLayout android:id="@+id/row_1"
         android:orientation="horizontal" 

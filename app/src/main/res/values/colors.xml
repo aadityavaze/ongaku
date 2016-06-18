@@ -1,8 +1,8 @@
 <resources>
     <color name="screen_background">#ffffff</color>
     <color name="display_background">#ececec</color>
-    <color name="colorPrimary">#1c7cca</color>
-    <color name="colorPrimaryDark">#155589</color>
+    <color name="colorPrimary">#a755dd</color>
+    <color name="colorPrimaryDark">#8427c2</color>
     <color name="colorAccent">#00faff</color>
 
 </resources>

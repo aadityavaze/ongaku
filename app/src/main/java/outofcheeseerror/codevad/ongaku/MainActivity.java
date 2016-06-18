@@ -77,8 +77,7 @@ public class MainActivity extends Activity {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        outofcheeseerror.codevad.ongaku.FontsOverride.setDefaultFont(this, "DEFAULT", "MyFontAsset.ttf");
-        Log.i(TAG, "[ACTIVITY] onCreate");
+        outofcheeseerror.codevad.ongaku.FontsOverride.setDefaultFont(this, "DEFAULT", "r.ttf");
         super.onCreate(savedInstanceState);
 
         mStepValue = 0;
