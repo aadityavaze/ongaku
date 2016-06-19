@@ -1,5 +1,7 @@
 
-
+/**
+ * Created by Vaze on 6/18/2016.
+ */
 package outofcheeseerror.codevad.ongaku;
 
 
