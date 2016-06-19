@@ -5,8 +5,7 @@ import java.util.ArrayList;
 
 /**
  * Calculates and displays pace (steps / minute), handles input of desired pace,
- * notifies user if he/she has to go faster or slower.  
- * @author Levente Bagi
+ * notifies user if he/she has to go faster or slower.
  */
 public class PaceNotifier implements StepListener, SpeakingTimer.Listener {
 

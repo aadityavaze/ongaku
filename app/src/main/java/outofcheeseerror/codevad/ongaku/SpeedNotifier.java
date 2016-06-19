@@ -19,14 +19,11 @@ public class SpeedNotifier implements PaceNotifier.Listener, SpeakingTimer.Liste
     PedometerSettings mSettings;
     Utils mUtils;
 
-    /** Desired speed, adjusted by the user */
     float mDesiredSpeed;
-    
-    /** Should we speak? */
+
     boolean mShouldTellFasterslower;
     boolean mShouldTellSpeed;
-    
-    /** When did the TTS speak last time */
+
     private long mSpokenAt = 0;
     
     public SpeedNotifier(Listener listener, PedometerSettings settings, Utils utils) {
