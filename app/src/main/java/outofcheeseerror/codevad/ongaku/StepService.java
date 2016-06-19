@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 
 public class StepService extends Service {
-	private static final String TAG = "name.bagi.levente.pedometer.StepService";
+	private static final String TAG = "DEBUG";
     private SharedPreferences mSettings;
     private PedometerSettings mPedometerSettings;
     private SharedPreferences mState;
@@ -133,13 +133,13 @@ public class StepService extends Service {
     
     @Override
     public void onStart(Intent intent, int startId) {
-        Log.i(TAG, "[SERVICE] onStart");
+
         super.onStart(intent, startId);
     }
 
     @Override
     public void onDestroy() {
-        Log.i(TAG, "[SERVICE] onDestroy");
+
         mUtils.shutdownTTS();
 
         // Unregister our receiver.
@@ -183,7 +183,7 @@ public class StepService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.i(TAG, "[SERVICE] onBind");
+
         return mBinder;
     }
 
