@@ -68,6 +68,7 @@ public class MainActivity extends Activity {
     PlaybackParams params;
     Button play;
     private int count=0;
+    private float songBpm=128;
 
 
     private boolean mIsRunning;
@@ -438,16 +439,16 @@ public class MainActivity extends Activity {
                             avPaceValue=0;
                             count=0;
                             mPaceValueView.setText("" + (int)actAvPaceValue);
-                          if((Math.abs(actAvPaceValue-128f))/100<0.9f)
-                            {params.setSpeed((float)(1.0f+((actAvPaceValue-128f))/300));
+                          if((Math.abs(actAvPaceValue-songBpm))/100<0.9f)
+                            {params.setSpeed((float)(1.0f+((actAvPaceValue-songBpm))/300));
                             audioPlayer.setPlaybackParams(params);
                                 }
-                           else if((actAvPaceValue-128f)/100>0.9f)
-                            {params.setSpeed((1.4f));
+                           else if((actAvPaceValue-songBpm)/100>0.9f)
+                            {params.setSpeed((1.35f));
                                 audioPlayer.setPlaybackParams(params);
                             }
                             else
-                          {params.setSpeed((0.6f));
+                          {params.setSpeed((0.65f));
                               audioPlayer.setPlaybackParams(params);
                           }
 
